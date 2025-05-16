@@ -19,26 +19,31 @@ Label 2: Edema (ED)
 Label 3: Enhancing tumor (ET)
 Each tumor sub-region reflects different pathological conditions. The union of all three is referred to as the Whole Tumor (WT). Understanding these distinctions supports better clinical outcomes.
 
-/dataset/  
-├── brats20-dataset-training-validation/  
-│   ├── BraTS2020_TrainingData/  
-│   |    ├── MICCAI_BraT2020_TrainingData/
-|   |    |  ├──BraTS2020_Training_001
-|   |    |  |   ├──BraTS2020_Training_001_flair.nii
-|   |    |  |   ├──BraTS2020_Training_001_seg.nii
-|   |    |  |   ├──BraTS2020_Training_001_t1.nii
-|   |    |  |   ├──BraTS2020_Training_001_t1ce.nii
-|   |    |  |   ├──BraTS2020_Training_001_t2.nii
-|   |    |  ├──BraTS2020_Training_00*
-│   ├── BraTS2020_ValidationData/  
-│   |    ├── MICCAI_BraT2020_TrainingData/
-|   |    |  ├──BraTS2020_Training_001
-|   |    |  |   ├──BraTS2020_Training_001_flair.nii
-|   |    |  |   ├──BraTS2020_Training_001_seg.nii
-|   |    |  |   ├──BraTS2020_Training_001_t1.nii
-|   |    |  |   ├──BraTS2020_Training_001_t1ce.nii
-|   |    |  |   ├──BraTS2020_Training_001_t2.nii
-|   |    |  ├──BraTS2020_Training_00*
+/dataset/
+├── brats20-dataset-training-validation/
+│   ├── BraTS2020_TrainingData/
+│   │   └── MICCAI_BraT2020_TrainingData/
+│   │       ├── BraTS2020_Training_001/
+│   │       │   ├── BraTS2020_Training_001_flair.nii
+│   │       │   ├── BraTS2020_Training_001_seg.nii
+│   │       │   ├── BraTS2020_Training_001_t1.nii
+│   │       │   ├── BraTS2020_Training_001_t1ce.nii
+│   │       │   └── BraTS2020_Training_001_t2.nii
+│   │       ├── BraTS2020_Training_002/
+│   │       │   └── …
+│   │       └── …
+│   └── BraTS2020_ValidationData/
+│       └── MICCAI_BraT2020_ValidationData/
+│           ├── BraTS2020_Validation_001/
+│           │   ├── BraTS2020_Validation_001_flair.nii
+│           │   ├── BraTS2020_Validation_001_seg.nii
+│           │   ├── BraTS2020_Validation_001_t1.nii
+│           │   ├── BraTS2020_Validation_001_t1ce.nii
+│           │   └── BraTS2020_Validation_001_t2.nii
+│           ├── BraTS2020_Validation_002/
+│           │   └── …
+│           └── …
+
 
 ## Model Architecture and Evaluation Metrics
 
@@ -51,6 +56,24 @@ Each tumor sub-region reflects different pathological conditions. The union of a
 - Flexible Multi-Modal Input
   The BraTS dataset provides multiple MRI sequences per patient. U-Net seamlessly incorporates multi-channel inputs (e.g.      T1, T2, FLAIR) and outputs voxel-wise class probabilities for each tumor subregion, making it ideal for the four-class       (background + three tumor types) problem.
 
+Dice-Based & Clinical-Oriented Metrics
+
+Dice Coefficient & Dice Loss:
+- Overlap-Focused: Dice directly measures voxel overlap, so optimizing Dice loss maximizes segmentation agreement even for small, irregular tumor regions.
+
+- Class Imbalance Handling: Tumors often occupy a small fraction of brain volume; Dice loss naturally down-weights large background regions.
+
+Combined Categorical Dice + Cross-Entropy:
+
+- Stability + Precision: Cross-entropy enforces per-voxel correctness, while Dice encourages overall shape accuracy. Together, they yield both sharp boundaries and reliable class probabilities.
+
+Sensitivity (Recall):
+
+- Minimize Missed Lesions: In clinical practice, failing to detect tumor tissue (“false negatives”) can have severe consequences. Sensitivity quantifies true-positive rate, ensuring the model learns to catch as many tumor voxels as possible.
+
+Specificity:
+
+- Avoid Over-Segmentation: Equally important is not labeling healthy tissue as tumor (“false positives”), which could lead to unnecessary interventions. Specificity measures true-negative rate, keeping the model conservative where it should.
 
 
 
