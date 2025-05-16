@@ -47,14 +47,16 @@ Each tumor sub-region reflects different pathological conditions. The union of a
 
 ## Model Architecture and Evaluation Metrics
 
-- Strong Localization + Context
-  U-Net’s symmetric encoder–decoder with skip-connections excels at preserving fine spatial details (tumor boundaries) while   capturing high-level context (tumor heterogeneity). In BraTS, where small enhancing tumor regions matter, those skip-        connections help localize tiny lesions without losing global appearance.
+U-Net 
 
-- Proven in Medical Imaging
-  Since its introduction, U-Net has become the de-facto standard for biomedical segmentation tasks. Its design works well      even with limited annotated data—common in medical settings—thanks to efficient feature reuse and data-augmentation          compatibility.
+Strong Localization + Context:
+- U-Net’s symmetric encoder–decoder with skip-connections excels at preserving fine spatial details (tumor boundaries) while   capturing high-level context (tumor heterogeneity). In BraTS, where small enhancing tumor regions matter, those skip-        connections help localize tiny lesions without losing global appearance.
 
-- Flexible Multi-Modal Input
-  The BraTS dataset provides multiple MRI sequences per patient. U-Net seamlessly incorporates multi-channel inputs (e.g.      T1, T2, FLAIR) and outputs voxel-wise class probabilities for each tumor subregion, making it ideal for the four-class       (background + three tumor types) problem.
+Proven in Medical Imaging:
+- Since its introduction, U-Net has become the de-facto standard for biomedical segmentation tasks. Its design works well      even with limited annotated data—common in medical settings—thanks to efficient feature reuse and data-augmentation          compatibility.
+
+Flexible Multi-Modal Input:
+- The BraTS dataset provides multiple MRI sequences per patient. U-Net seamlessly incorporates multi-channel inputs (e.g.      T1, T2, FLAIR) and outputs voxel-wise class probabilities for each tumor subregion, making it ideal for the four-class       (background + three tumor types) problem.
 
 Dice-Based & Clinical-Oriented Metrics
 
